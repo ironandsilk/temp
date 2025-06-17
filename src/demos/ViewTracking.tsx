@@ -187,25 +187,25 @@ export default function App() {
   return (
     <div ref={ref} className="container">
       <div className="text">
-        Work on version 8 has begun 3 Sep 2021.
+        Work has begun on 🌬️🌊
         <div
           ref={view1}
           className="translateX"
           style={{ margin: '0.2em', width: 400, height: 200, display: 'inline-block' }}
         />
-        This is perhaps the biggest update to Fiber yet.
+        Phase 0: Just a candy bar and a gum drop
         <div
           ref={view2}
           className="scale"
           style={{ margin: '0.2em', width: 400, height: 200, display: 'inline-block' }}
         />
-        We've tried our best to keep breaking-changes to a minimum,
+        Phase 1: A candy bar and a gum drop with a sticker inside the box.
         <div
           ref={view3}
           className="translateY"
           style={{ margin: '0.2em', width: 400, height: 200, display: 'inline-block' }}
         />
-        they mostly affect rarely used api's like attach.
+        Phase 2: A candy bar on wheels, dropping a gum drop, with a sticker inside the candy bar.
         <div
           ref={view4}
           className="scale"
