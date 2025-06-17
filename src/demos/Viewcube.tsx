@@ -63,7 +63,7 @@ export default function App() {
   return (
     <Canvas>
       <mesh>
-        <torusGeometry args={[1, 0.5, 32, 100]} />
+        <boxGeometry args={[2, 1, 1]} />
         <meshNormalMaterial />
       </mesh>
       <Viewcube />
