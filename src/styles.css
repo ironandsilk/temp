@@ -92,10 +92,10 @@ canvas {
 }
 
 .text {
-  line-height: 1.5em;
+  line-height: 1em;
   text-align: left;
-  font-size: 4em;
-  word-break: break-word;
+  font-size: 8em;
+  word-break: normal;
   position: absolute;
   top: 0;
   left: 0;
