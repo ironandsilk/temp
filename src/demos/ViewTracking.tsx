@@ -186,38 +186,65 @@ export default function App() {
   const [view1, view2, view3, view4, view5] = useRefs() as any
   return (
     <div ref={ref} className="container">
-      <div className="text">
-        Work has begun on 🌬️🌊
-        <div
-          ref={view1}
-          className="translateX"
-          style={{ margin: '0.2em', width: 400, height: 200, display: 'inline-block' }}
-        />
-        Phase 0: Just a candy bar and a gum drop
-        <div
-          ref={view2}
-          className="scale"
-          style={{ margin: '0.2em', width: 400, height: 200, display: 'inline-block' }}
-        />
-        Phase 1: A candy bar and a gum drop with a sticker inside the box.
-        <div
-          ref={view3}
-          className="translateY"
-          style={{ margin: '0.2em', width: 400, height: 200, display: 'inline-block' }}
-        />
-        Phase 2: A candy bar on wheels, dropping a gum drop, with a sticker inside the candy bar.
-        <div
-          ref={view4}
-          className="scale"
-          style={{ margin: '0.2em', width: 400, height: 200, display: 'inline-block' }}
-        />
-        This release brings a ton of performance related fixes,
-        <div
-          ref={view5}
-          className="translateX"
-          style={{ margin: '0.2em', width: 400, height: 200, display: 'inline-block' }}
-        />
-        but also includes some new and ground-breaking features.
+      <div className="row">
+        <div className="description">Work has begun on 🌬️🌊</div>
+        <div className="viewer">
+          <View track={view1}>
+            <color attach="background" args={['lightpink']} />
+            <Scene />
+            <TransformControls>
+              <Soda scale={6} position={[0, -1.6, 0]} />
+            </TransformControls>
+            <PerspectiveCamera makeDefault fov={40} position={[0, 0, 6]} />
+            <OrbitControls makeDefault />
+          </View>
+        </div>
+      </div>
+      <div className="row">
+        <div className="description">Phase 0: Just a candy bar and a gum drop</div>
+        <div className="viewer">
+          <View track={view2}>
+            <color attach="background" args={['lightblue']} />
+            <Scene />
+            <TransformControls>
+              <Apple scale={10} />
+            </TransformControls>
+            <PerspectiveCamera makeDefault fov={40} position={[0, 0, 6]} />
+          </View>
+        </div>
+      </div>
+      <div className="row">
+        <div className="description">Phase 1: A candy bar and a gum drop with a sticker inside the box.</div>
+        <div className="viewer">
+          <View track={view3}>
+            <color attach="background" args={['lightgreen']} />
+            <Scene />
+            <Duck scale={2} />
+            <PerspectiveCamera makeDefault fov={40} position={[0, 0, 6]} />
+          </View>
+        </div>
+      </div>
+      <div className="row">
+        <div className="description">Phase 2: A candy bar on wheels, dropping a gum drop, with a sticker inside the candy bar.</div>
+        <div className="viewer">
+          <View track={view4}>
+            <color attach="background" args={['peachpuff']} />
+            <Scene />
+            <Candy scale={3} />
+            <PerspectiveCamera makeDefault fov={40} position={[0, 0, 6]} />
+          </View>
+        </div>
+      </div>
+      <div className="row">
+        <div className="description">This release brings a ton of performance related fixes, but also includes some new and ground-breaking features.</div>
+        <div className="viewer">
+          <View track={view5}>
+            <color attach="background" args={['orange']} />
+            <Scene />
+            <Flash scale={3} />
+            <PerspectiveCamera makeDefault fov={40} position={[0, 0, 6]} />
+          </View>
+        </div>
       </div>
       <Canvas
         onCreated={(state) => state.events.connect?.(ref.current)}
@@ -229,41 +256,6 @@ export default function App() {
           width: '100vw',
           height: '100vh',
         }}>
-        <View track={view1}>
-          <color attach="background" args={['lightpink']} />
-          <Scene />
-          <TransformControls>
-            <Soda scale={6} position={[0, -1.6, 0]} />
-          </TransformControls>
-          <PerspectiveCamera makeDefault fov={40} position={[0, 0, 6]} />
-          <OrbitControls makeDefault />
-        </View>
-        <View track={view2}>
-          <color attach="background" args={['lightblue']} />
-          <Scene />
-          <TransformControls>
-            <Apple scale={10} />
-          </TransformControls>
-          <PerspectiveCamera makeDefault fov={40} position={[0, 0, 6]} />
-        </View>
-        <View track={view3}>
-          <color attach="background" args={['lightgreen']} />
-          <Scene />
-          <Duck scale={2} />
-          <PerspectiveCamera makeDefault fov={40} position={[0, 0, 6]} />
-        </View>
-        <View track={view4}>
-          <color attach="background" args={['peachpuff']} />
-          <Scene />
-          <Candy scale={3} />
-          <PerspectiveCamera makeDefault fov={40} position={[0, 0, 6]} />
-        </View>
-        <View track={view5}>
-          <color attach="background" args={['orange']} />
-          <Scene />
-          <Flash scale={3} />
-          <PerspectiveCamera makeDefault fov={40} position={[0, 0, 6]} />
-        </View>
         <Preload all />
       </Canvas>
     </div>

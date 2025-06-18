@@ -7,8 +7,11 @@ import './styles.css'
 
 import * as demos from './demos'
 
-const DEFAULT_COMPONENT_NAME = 'Portals'
-const visibleComponents: any = Object.entries(demos).reduce((acc, [name, item]) => ({ ...acc, [name]: item }), {})
+const DEFAULT_COMPONENT_NAME = 'Viewcube'
+const visibleComponents: any = {
+  Viewcube: demos.Viewcube,
+  ViewTracking: demos.ViewTracking,
+}
 
 function ErrorBoundary({ children, fallback, name }: any) {
   const { ErrorBoundary, didCatch, error } = useErrorBoundary()
