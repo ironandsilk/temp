@@ -201,7 +201,7 @@ export default function App() {
                 <meshStandardMaterial color="orange" />
               </mesh>
             </TransformControls>
-            <PerspectiveCamera makeDefault fov={40} position={[0, 0, 6]} />
+            <PerspectiveCamera makeDefault fov={40} position={[-2, 0, 6]} rotation={[0, -45, 0]}/>
             <OrbitControls makeDefault />
           </View>
         </div>
