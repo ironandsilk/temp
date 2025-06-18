@@ -195,6 +195,12 @@ export default function App() {
             <TransformControls>
               <Soda scale={6} position={[0, -1.6, 0]} />
             </TransformControls>
+            <TransformControls>
+              <mesh position={[2, 0, 0]}>
+                <boxGeometry args={[1, 1, 1]} />
+                <meshStandardMaterial color="orange" />
+              </mesh>
+            </TransformControls>
             <PerspectiveCamera makeDefault fov={40} position={[0, 0, 6]} />
             <OrbitControls makeDefault />
           </View>
@@ -214,11 +220,35 @@ export default function App() {
         </div>
       </div>
       <div className="row">
-        <div className="description">Phase 1: A candy bar and a gum drop with a sticker inside the box.</div>
+        <div className="description">Phase 1: A candy bar and a gum drop with a sticker inside the box. (Draggable hemisphere, cube, and parented example)</div>
         <div className="viewer">
           <View track={view3}>
             <color attach="background" args={['lightgreen']} />
             <Scene />
+            <TransformControls>
+              <mesh position={[-2, 0, 0]}>
+                <sphereGeometry args={[1, 32, 32, 0, Math.PI * 2, 0, Math.PI / 2]} />
+                <meshStandardMaterial color="lightblue" />
+              </mesh>
+            </TransformControls>
+            <TransformControls>
+              <mesh position={[2, 0, 0]}>
+                <boxGeometry args={[1, 1, 1]} />
+                <meshStandardMaterial color="red" />
+              </mesh>
+            </TransformControls>
+            <TransformControls>
+              <group position={[0, 0, 0]}>
+                <mesh>
+                  <boxGeometry args={[1, 1, 1]} />
+                  <meshStandardMaterial color="green" />
+                </mesh>
+                <mesh position={[0, 1, 0]}>
+                  <sphereGeometry args={[0.3, 32, 32]} />
+                  <meshStandardMaterial color="yellow" />
+                </mesh>
+              </group>
+            </TransformControls>
             <Duck scale={2} />
             <PerspectiveCamera makeDefault fov={40} position={[0, 0, 6]} />
           </View>
