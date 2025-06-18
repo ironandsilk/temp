@@ -188,93 +188,23 @@ export default function App() {
     <div ref={ref} className="container">
       <div className="row">
         <div className="description">Work has begun on 🌬️🌊</div>
-        <div className="viewer">
-          <View track={view1}>
-            <color attach="background" args={['lightpink']} />
-            <Scene />
-            <TransformControls>
-              <Soda scale={6} position={[0, -1.6, 0]} />
-            </TransformControls>
-            <TransformControls>
-              <mesh position={[2, 0, 0]}>
-                <boxGeometry args={[1, 1, 1]} />
-                <meshStandardMaterial color="orange" />
-              </mesh>
-            </TransformControls>
-            <PerspectiveCamera makeDefault fov={40} position={[-2, 0, 6]} rotation={[0, -45, 0]}/>
-            <OrbitControls makeDefault />
-          </View>
-        </div>
+        <div className="viewer" ref={view1} />
       </div>
       <div className="row">
         <div className="description">Phase 0: Just a candy bar and a gum drop</div>
-        <div className="viewer">
-          <View track={view2}>
-            <color attach="background" args={['lightblue']} />
-            <Scene />
-            <TransformControls>
-              <Apple scale={10} />
-            </TransformControls>
-            <PerspectiveCamera makeDefault fov={40} position={[0, 0, 6]} />
-          </View>
-        </div>
+        <div className="viewer" ref={view2} />
       </div>
       <div className="row">
         <div className="description">Phase 1: A candy bar and a gum drop with a sticker inside the box. (Draggable hemisphere, cube, and parented example)</div>
-        <div className="viewer">
-          <View track={view3}>
-            <color attach="background" args={['lightgreen']} />
-            <Scene />
-            <TransformControls>
-              <mesh position={[-2, 0, 0]}>
-                <sphereGeometry args={[1, 32, 32, 0, Math.PI * 2, 0, Math.PI / 2]} />
-                <meshStandardMaterial color="lightblue" />
-              </mesh>
-            </TransformControls>
-            <TransformControls>
-              <mesh position={[2, 0, 0]}>
-                <boxGeometry args={[1, 1, 1]} />
-                <meshStandardMaterial color="red" />
-              </mesh>
-            </TransformControls>
-            <TransformControls>
-              <group position={[0, 0, 0]}>
-                <mesh>
-                  <boxGeometry args={[1, 1, 1]} />
-                  <meshStandardMaterial color="green" />
-                </mesh>
-                <mesh position={[0, 1, 0]}>
-                  <sphereGeometry args={[0.3, 32, 32]} />
-                  <meshStandardMaterial color="yellow" />
-                </mesh>
-              </group>
-            </TransformControls>
-            <Duck scale={2} />
-            <PerspectiveCamera makeDefault fov={40} position={[0, 0, 6]} />
-          </View>
-        </div>
+        <div className="viewer" ref={view3} />
       </div>
       <div className="row">
         <div className="description">Phase 2: A candy bar on wheels, dropping a gum drop, with a sticker inside the candy bar.</div>
-        <div className="viewer">
-          <View track={view4}>
-            <color attach="background" args={['peachpuff']} />
-            <Scene />
-            <Candy scale={3} />
-            <PerspectiveCamera makeDefault fov={40} position={[0, 0, 6]} />
-          </View>
-        </div>
+        <div className="viewer" ref={view4} />
       </div>
       <div className="row">
         <div className="description">This release brings a ton of performance related fixes, but also includes some new and ground-breaking features.</div>
-        <div className="viewer">
-          <View track={view5}>
-            <color attach="background" args={['orange']} />
-            <Scene />
-            <Flash scale={3} />
-            <PerspectiveCamera makeDefault fov={40} position={[0, 0, 6]} />
-          </View>
-        </div>
+        <div className="viewer" ref={view5} />
       </div>
       <Canvas
         onCreated={(state) => state.events.connect?.(ref.current)}
@@ -285,7 +215,73 @@ export default function App() {
           left: 0,
           width: '100vw',
           height: '100vh',
+          zIndex: 0,
         }}>
+        <View track={view1}>
+          <color attach="background" args={['lightpink']} />
+          <Scene />
+          <TransformControls>
+            <Soda scale={6} position={[0, -1.6, 0]} />
+          </TransformControls>
+          <TransformControls>
+            <mesh position={[2, 0, 0]}>
+              <boxGeometry args={[1, 1, 1]} />
+              <meshStandardMaterial color="orange" />
+            </mesh>
+          </TransformControls>
+          <PerspectiveCamera makeDefault fov={40} position={[-2, 0, 6]} rotation={[0, -45, 0]}/>
+          <OrbitControls makeDefault />
+        </View>
+        <View track={view2}>
+          <color attach="background" args={['lightblue']} />
+          <Scene />
+          <TransformControls>
+            <Apple scale={10} />
+          </TransformControls>
+          <PerspectiveCamera makeDefault fov={40} position={[0, 0, 6]} />
+        </View>
+        <View track={view3}>
+          <color attach="background" args={['lightgreen']} />
+          <Scene />
+          <TransformControls>
+            <mesh position={[-2, 0, 0]}>
+              <sphereGeometry args={[1, 32, 32, 0, Math.PI * 2, 0, Math.PI / 2]} />
+              <meshStandardMaterial color="lightblue" />
+            </mesh>
+          </TransformControls>
+          <TransformControls>
+            <mesh position={[2, 0, 0]}>
+              <boxGeometry args={[1, 1, 1]} />
+              <meshStandardMaterial color="red" />
+            </mesh>
+          </TransformControls>
+          <TransformControls>
+            <group position={[0, 0, 0]}>
+              <mesh>
+                <boxGeometry args={[1, 1, 1]} />
+                <meshStandardMaterial color="green" />
+              </mesh>
+              <mesh position={[0, 1, 0]}>
+                <sphereGeometry args={[0.3, 32, 32]} />
+                <meshStandardMaterial color="yellow" />
+              </mesh>
+            </group>
+          </TransformControls>
+          <Duck scale={2} />
+          <PerspectiveCamera makeDefault fov={40} position={[0, 0, 6]} />
+        </View>
+        <View track={view4}>
+          <color attach="background" args={['peachpuff']} />
+          <Scene />
+          <Candy scale={3} />
+          <PerspectiveCamera makeDefault fov={40} position={[0, 0, 6]} />
+        </View>
+        <View track={view5}>
+          <color attach="background" args={['orange']} />
+          <Scene />
+          <Flash scale={3} />
+          <PerspectiveCamera makeDefault fov={40} position={[0, 0, 6]} />
+        </View>
         <Preload all />
       </Canvas>
     </div>
