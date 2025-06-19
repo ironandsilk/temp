@@ -48,8 +48,6 @@ function Dots() {
 }
 
 export default function App() {
-  const dev = new URLSearchParams(location.search).get('dev')
-
   return (
     <Page>
       <React.Suspense fallback={<Loading />}>
@@ -58,7 +56,7 @@ export default function App() {
           <Demo />
         </Route>
       </React.Suspense>
-      {dev === null && <Dots />}
+      <Dots />
     </Page>
   )
 }
