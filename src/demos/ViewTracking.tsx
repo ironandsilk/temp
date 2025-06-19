@@ -236,11 +236,8 @@ export default function App() {
           <color attach="background" args={['lightpink']} />
           <Scene />
           <TransformControls>
-            <Soda scale={3} position={[0, -1.6, 0]} />
-          </TransformControls>
-          <TransformControls>
             <mesh position={[2, 0, 0]}>
-              <boxGeometry args={[2, 1, 1]} />
+              <boxGeometry args={[4, 1, 1]} />
               <meshStandardMaterial color="orange" />
             </mesh>
           </TransformControls>
@@ -251,13 +248,20 @@ export default function App() {
           <color attach="background" args={['lightblue']} />
           <Scene />
           <TransformControls>
-            <Apple scale={10} />
+            <mesh>
+              <sphereGeometry args={[1, 32, 32, 0, Math.PI * 2, 0, Math.PI / 2]} />
+              <meshStandardMaterial color="red" />
+            </mesh>
           </TransformControls>
           <PerspectiveCamera makeDefault fov={40} position={[-2, 0, 6]} rotation={[0, -45, 0]} />
         </View>
         <View track={view3}>
           <color attach="background" args={['lightgreen']} />
           <Scene />
+          <mesh>
+            <sphereGeometry args={[10, 32, 32, 0, Math.PI * 2, 0, Math.PI / 2]} />
+            <meshStandardMaterial color="lightblue" side={THREE.BackSide} />
+          </mesh>
           <TransformControls>
             <mesh position={[-2, 0, 0]}>
               <sphereGeometry args={[1, 32, 32, 0, Math.PI * 2, 0, Math.PI / 2]} />
@@ -288,6 +292,10 @@ export default function App() {
         <View track={view4}>
           <color attach="background" args={['peachpuff']} />
           <Scene />
+          <mesh>
+            <boxGeometry args={[8, 8, 8]} />
+            <meshStandardMaterial color="purple" wireframe />
+          </mesh>
           <Candy scale={3} />
           <PerspectiveCamera makeDefault fov={40} position={[0, 0, 6]} />
         </View>
