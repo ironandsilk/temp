@@ -67,6 +67,12 @@ function Apple(props: ThreeElements['group']) {
   return <primitive object={scene} {...props} />
 }
 
+function Person(props: ThreeElements['group']) {
+  const { scene } = useGLTF('/person.glb')
+  useFrame((state, delta) => (scene.rotation.y += delta))
+  return <primitive object={scene} {...props} />
+}
+
 const isOrthographicCamera = (def: THREE.Camera): def is THREE.OrthographicCamera =>
   def && (def as THREE.OrthographicCamera).isOrthographicCamera
 const col = new THREE.Color()
@@ -252,6 +258,7 @@ export default function App() {
               <meshStandardMaterial color="red" />
             </mesh>
           </TransformControls>
+          <Person scale={0.2} />
           <PerspectiveCamera makeDefault fov={40} position={[-1, 0, 6]} rotation={[0, -45, 0]} />
         </View>
         <View track={view3}>
