@@ -11,7 +11,6 @@ import {
 import { useCallback, useEffect, useReducer, useRef, useState } from 'react'
 import useRefs from 'react-use-refs'
 import * as THREE from 'three'
-import { DemoPanel } from '../components'
 
 function useHover() {
   const [hovered, setHovered] = useState(false)
@@ -186,126 +185,120 @@ export default function App() {
   const ref = useRef<HTMLDivElement>(null!)
   const [view1, view2, view3, view4, view5] = useRefs() as any
   return (
-    <>
-      <div className="top-bar">
-        <DemoPanel />
-        <span className="title">View Tracking</span>
+    <div ref={ref} className="container">
+      <div className="row">
+        <div className="description">
+          <h2 className="phase-title">Phase 0</h2>
+          <div className="body">Work has begun on 🌬️🌊</div>
+        </div>
+        <div className="viewer" ref={view1} />
       </div>
-      <div ref={ref} className="container">
-        <div className="row">
-          <div className="description">
-            <h2 className="phase-title">Phase 0</h2>
-            <div className="body">Work has begun on 🌬️🌊</div>
-          </div>
-          <div className="viewer" ref={view1} />
+      <div className="row">
+        <div className="description">
+          <h2 className="phase-title">Phase 1</h2>
+          <div className="body">Just a candy bar and a gum drop</div>
         </div>
-        <div className="row">
-          <div className="description">
-            <h2 className="phase-title">Phase 1</h2>
-            <div className="body">Just a candy bar and a gum drop</div>
-          </div>
-          <div className="viewer" ref={view2} />
+        <div className="viewer" ref={view2} />
+      </div>
+      <div className="row">
+        <div className="description">
+          <h2 className="phase-title">Phase 2</h2>
+          <div className="body">A candy bar and a gum drop with a sticker inside the box. (Draggable hemisphere, cube, and parented example)</div>
         </div>
-        <div className="row">
-          <div className="description">
-            <h2 className="phase-title">Phase 2</h2>
-            <div className="body">A candy bar and a gum drop with a sticker inside the box. (Draggable hemisphere, cube, and parented example)</div>
-          </div>
-          <div className="viewer" ref={view3} />
+        <div className="viewer" ref={view3} />
+      </div>
+      <div className="row">
+        <div className="description">
+          <h2 className="phase-title">Phase 3</h2>
+          <div className="body">A candy bar on wheels, dropping a gum drop, with a sticker inside the candy bar.</div>
         </div>
-        <div className="row">
-          <div className="description">
-            <h2 className="phase-title">Phase 3</h2>
-            <div className="body">A candy bar on wheels, dropping a gum drop, with a sticker inside the candy bar.</div>
-          </div>
-          <div className="viewer" ref={view4} />
+        <div className="viewer" ref={view4} />
+      </div>
+      <div className="row">
+        <div className="description">
+          <h2 className="phase-title">Release Notes</h2>
+          <div className="body">This release brings a ton of performance related fixes, but also includes some new and ground-breaking features.</div>
         </div>
-        <div className="row">
-          <div className="description">
-            <h2 className="phase-title">Release Notes</h2>
-            <div className="body">This release brings a ton of performance related fixes, but also includes some new and ground-breaking features.</div>
-          </div>
-          <div className="viewer" ref={view5} />
-        </div>
-        <Canvas
-          onCreated={(state) => state.events.connect?.(ref.current)}
-          style={{
-            pointerEvents: 'none',
-            position: 'fixed',
-            top: 0,
-            left: 0,
-            width: '100vw',
-            height: '100vh',
-            zIndex: 0,
-          }}>
-          <View track={view1}>
-            <color attach="background" args={['lightpink']} />
-            <Scene />
-            <TransformControls>
-              <Soda scale={3} position={[0, -1.6, 0]} />
-            </TransformControls>
-            <TransformControls>
-              <mesh position={[2, 0, 0]}>
-                <boxGeometry args={[2, 1, 1]} />
-                <meshStandardMaterial color="orange" />
-              </mesh>
-            </TransformControls>
-            <PerspectiveCamera makeDefault fov={40} position={[-2, 0, 6]} rotation={[0, -45, 0]} />
-            <OrbitControls makeDefault />
-          </View>
-          <View track={view2}>
-            <color attach="background" args={['lightblue']} />
-            <Scene />
-            <TransformControls>
-              <Apple scale={10} />
-            </TransformControls>
-            <PerspectiveCamera makeDefault fov={40} position={[-2, 0, 6]} rotation={[0, -45, 0]} />
-          </View>
-          <View track={view3}>
-            <color attach="background" args={['lightgreen']} />
-            <Scene />
-            <TransformControls>
-              <mesh position={[-2, 0, 0]}>
-                <sphereGeometry args={[1, 32, 32, 0, Math.PI * 2, 0, Math.PI / 2]} />
-                <meshStandardMaterial color="lightblue" />
-              </mesh>
-            </TransformControls>
-            <TransformControls>
-              <mesh position={[2, 0, 0]}>
+        <div className="viewer" ref={view5} />
+      </div>
+      <Canvas
+        onCreated={(state) => state.events.connect?.(ref.current)}
+        style={{
+          pointerEvents: 'none',
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          width: '100vw',
+          height: '100vh',
+          zIndex: 0,
+        }}>
+        <View track={view1}>
+          <color attach="background" args={['lightpink']} />
+          <Scene />
+          <TransformControls>
+            <Soda scale={3} position={[0, -1.6, 0]} />
+          </TransformControls>
+          <TransformControls>
+            <mesh position={[2, 0, 0]}>
+              <boxGeometry args={[2, 1, 1]} />
+              <meshStandardMaterial color="orange" />
+            </mesh>
+          </TransformControls>
+          <PerspectiveCamera makeDefault fov={40} position={[-2, 0, 6]} rotation={[0, -45, 0]} />
+          <OrbitControls makeDefault />
+        </View>
+        <View track={view2}>
+          <color attach="background" args={['lightblue']} />
+          <Scene />
+          <TransformControls>
+            <Apple scale={10} />
+          </TransformControls>
+          <PerspectiveCamera makeDefault fov={40} position={[-2, 0, 6]} rotation={[0, -45, 0]} />
+        </View>
+        <View track={view3}>
+          <color attach="background" args={['lightgreen']} />
+          <Scene />
+          <TransformControls>
+            <mesh position={[-2, 0, 0]}>
+              <sphereGeometry args={[1, 32, 32, 0, Math.PI * 2, 0, Math.PI / 2]} />
+              <meshStandardMaterial color="lightblue" />
+            </mesh>
+          </TransformControls>
+          <TransformControls>
+            <mesh position={[2, 0, 0]}>
+              <boxGeometry args={[1, 1, 1]} />
+              <meshStandardMaterial color="red" />
+            </mesh>
+          </TransformControls>
+          <TransformControls>
+            <group position={[0, 0, 0]}>
+              <mesh>
                 <boxGeometry args={[1, 1, 1]} />
-                <meshStandardMaterial color="red" />
+                <meshStandardMaterial color="green" />
               </mesh>
-            </TransformControls>
-            <TransformControls>
-              <group position={[0, 0, 0]}>
-                <mesh>
-                  <boxGeometry args={[1, 1, 1]} />
-                  <meshStandardMaterial color="green" />
-                </mesh>
-                <mesh position={[0, 1, 0]}>
-                  <sphereGeometry args={[0.3, 32, 32]} />
-                  <meshStandardMaterial color="yellow" />
-                </mesh>
-              </group>
-            </TransformControls>
-            <Duck scale={2} />
-            <PerspectiveCamera makeDefault fov={40} position={[0, 0, 6]} />
-          </View>
-          <View track={view4}>
-            <color attach="background" args={['peachpuff']} />
-            <Scene />
-            <Candy scale={3} />
-            <PerspectiveCamera makeDefault fov={40} position={[0, 0, 6]} />
-          </View>
-          <View track={view5}>
-            <color attach="background" args={['orange']} />
-            <Scene />
-            <Flash scale={3} />
-            <PerspectiveCamera makeDefault fov={40} position={[0, 0, 6]} />
-          </View>
-          <Preload all />
-        </Canvas>
-      </div>
-    </>
+              <mesh position={[0, 1, 0]}>
+                <sphereGeometry args={[0.3, 32, 32]} />
+                <meshStandardMaterial color="yellow" />
+              </mesh>
+            </group>
+          </TransformControls>
+          <Duck scale={2} />
+          <PerspectiveCamera makeDefault fov={40} position={[0, 0, 6]} />
+        </View>
+        <View track={view4}>
+          <color attach="background" args={['peachpuff']} />
+          <Scene />
+          <Candy scale={3} />
+          <PerspectiveCamera makeDefault fov={40} position={[0, 0, 6]} />
+        </View>
+        <View track={view5}>
+          <color attach="background" args={['orange']} />
+          <Scene />
+          <Flash scale={3} />
+          <PerspectiveCamera makeDefault fov={40} position={[0, 0, 6]} />
+        </View>
+        <Preload all />
+      </Canvas>
+    </div>
   )
 }

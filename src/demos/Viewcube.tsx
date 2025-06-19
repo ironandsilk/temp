@@ -2,7 +2,6 @@ import { OrbitControls } from '@react-three/drei'
 import { Canvas, createPortal, useFrame, useThree } from '@react-three/fiber'
 import { useLayoutEffect, useMemo, useRef, useState } from 'react'
 import * as THREE from 'three'
-import { DemoPanel } from '../components'
 
 function Viewcube() {
   const { gl, scene: defaultScene, camera: defaultCamera, size, events } = useThree()
@@ -62,19 +61,13 @@ function Viewcube() {
 
 export default function App() {
   return (
-    <>
-      <div className="top-bar">
-        <DemoPanel />
-        <span className="title">View Cube</span>
-      </div>
-      <Canvas>
-        <mesh>
-          <boxGeometry args={[2, 1, 1]} />
-          <meshNormalMaterial />
-        </mesh>
-        <Viewcube />
-        <OrbitControls />
-      </Canvas>
-    </>
+    <Canvas>
+      <mesh>
+        <boxGeometry args={[2, 1, 1]} />
+        <meshNormalMaterial />
+      </mesh>
+      <Viewcube />
+      <OrbitControls />
+    </Canvas>
   )
 }
