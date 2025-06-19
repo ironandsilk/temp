@@ -241,7 +241,7 @@ export default function App() {
               <meshStandardMaterial color="orange" />
             </mesh>
           </TransformControls>
-          <PerspectiveCamera makeDefault fov={40} position={[-2, 0, 6]} rotation={[0, -45, 0]} />
+          <PerspectiveCamera makeDefault fov={40} position={[-1, 0, 6]} rotation={[0, -45, 0]} />
         </View>
         <View track={view2}>
           <color attach="background" args={['lightblue']} />
@@ -252,7 +252,7 @@ export default function App() {
               <meshStandardMaterial color="red" />
             </mesh>
           </TransformControls>
-          <PerspectiveCamera makeDefault fov={40} position={[-2, 0, 6]} rotation={[0, -45, 0]} />
+          <PerspectiveCamera makeDefault fov={40} position={[-1, 0, 6]} rotation={[0, -45, 0]} />
         </View>
         <View track={view3}>
           <color attach="background" args={['lightgreen']} />
