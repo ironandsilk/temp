@@ -216,8 +216,8 @@ export default function App() {
       </div>
       <div className="row">
         <div className="description">
-          <h2 className="phase-title">Release Notes</h2>
-          <div className="body">This release brings a ton of performance related fixes, but also includes some new and ground-breaking features.</div>
+          <h2 className="phase-title">Full Vision</h2>
+          <div className="body">The full vision is a network of autonomous nodes, that can represent aganets or avatars based on where we chose to deploy them. This might just be the large scene that you can zoom on. Or it could be the whole planet</div>
         </div>
         <div className="viewer" ref={view5} />
       </div>
@@ -242,7 +242,6 @@ export default function App() {
             </mesh>
           </TransformControls>
           <PerspectiveCamera makeDefault fov={40} position={[-2, 0, 6]} rotation={[0, -45, 0]} />
-          <OrbitControls makeDefault />
         </View>
         <View track={view2}>
           <color attach="background" args={['lightblue']} />
@@ -298,12 +297,14 @@ export default function App() {
           </mesh>
           <Candy scale={3} />
           <PerspectiveCamera makeDefault fov={40} position={[0, 0, 6]} />
+          <OrbitControls makeDefault />
         </View>
         <View track={view5}>
           <color attach="background" args={['orange']} />
           <Scene />
           <Flash scale={3} />
           <PerspectiveCamera makeDefault fov={40} position={[0, 0, 6]} />
+          <OrbitControls makeDefault />
         </View>
         <Preload all />
       </Canvas>
