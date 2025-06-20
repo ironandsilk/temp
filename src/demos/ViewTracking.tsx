@@ -247,6 +247,7 @@ export default function App() {
             </mesh>
           </TransformControls>
           <PerspectiveCamera makeDefault fov={40} position={[-3, 0, 6]} rotation={[0, -45, 0]} />
+          <OrbitControls makeDefault enableZoom={false} />
         </View>
         <View track={view2}>
           <color attach="background" args={['lightblue']} />
@@ -259,6 +260,7 @@ export default function App() {
           </TransformControls>
           <Person scale={0.2} />
           <PerspectiveCamera makeDefault fov={40} position={[-1, 0, 6]} rotation={[0, -45, 0]} />
+          <OrbitControls makeDefault enableZoom={false} />
         </View>
         <View track={view3}>
           <color attach="background" args={['lightgreen']} />
@@ -294,6 +296,7 @@ export default function App() {
           <Duck scale={2} />
           <Person scale={0.2} />
           <PerspectiveCamera makeDefault fov={40} position={[0, 0, 6]} />
+          <OrbitControls makeDefault enableZoom={false} />
         </View>
         <View track={view4}>
           <color attach="background" args={['peachpuff']} />
