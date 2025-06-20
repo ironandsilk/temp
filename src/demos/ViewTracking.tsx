@@ -292,6 +292,7 @@ export default function App() {
             </group>
           </TransformControls>
           <Duck scale={2} />
+          <Person scale={0.2} />
           <PerspectiveCamera makeDefault fov={40} position={[0, 0, 6]} />
         </View>
         <View track={view4}>
