@@ -69,7 +69,6 @@ function Apple(props: ThreeElements['group']) {
 
 function Person(props: ThreeElements['group']) {
   const { scene } = useGLTF('/person.glb')
-  useFrame((state, delta) => (scene.rotation.y += delta))
   return <primitive object={scene} {...props} />
 }
 
@@ -247,7 +246,7 @@ export default function App() {
               <meshStandardMaterial color="orange" />
             </mesh>
           </TransformControls>
-          <PerspectiveCamera makeDefault fov={40} position={[-1, 0, 6]} rotation={[0, -45, 0]} />
+          <PerspectiveCamera makeDefault fov={40} position={[-3, 0, 6]} rotation={[0, -45, 0]} />
         </View>
         <View track={view2}>
           <color attach="background" args={['lightblue']} />
