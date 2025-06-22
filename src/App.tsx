@@ -10,7 +10,9 @@ import * as demos from './demos'
 const DEFAULT_COMPONENT_NAME = 'Viewcube'
 const visibleComponents: any = {
   Viewcube: demos.Viewcube,
+  ViewRing: demos.ViewRing,
   ViewTracking: demos.ViewTracking,
+  MultiView: demos.MultiView,
 }
 
 function ErrorBoundary({ children, fallback, name }: any) {

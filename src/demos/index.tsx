@@ -21,6 +21,7 @@ const SuspenseMaterial = { Component: lazy(() => import('./SuspenseMaterial')) }
 const SVGRenderer = { Component: lazy(() => import('./SVGRenderer')) }
 const Test = { Component: lazy(() => import('./Test')) }
 const Viewcube = { Component: lazy(() => import('./Viewcube')) }
+const ViewRing = { Component: lazy(() => import('./ViewRing')) }
 const Portals = { Component: lazy(() => import('./Portals')) }
 const ViewTracking = { Component: lazy(() => import('./ViewTracking')) }
 const ChangeTexture = { Component: lazy(() => import('./ChangeTexture')) }
@@ -47,6 +48,7 @@ export {
   SVGRenderer,
   Test,
   Viewcube,
+  ViewRing,
   MultiView,
   Portals,
   ViewTracking,
