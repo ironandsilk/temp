@@ -1,6 +1,7 @@
 import * as React from 'react'
 import { useErrorBoundary } from 'use-error-boundary'
 import { Redirect, Route, useRoute } from 'wouter'
+import { useEffect, useState } from 'react'
 
 import { DemoPanel, Dot, Error, Loading, Page } from './components'
 import './styles.css'
@@ -51,6 +52,21 @@ function Dots() {
 }
 
 export default function App() {
+  const [showInspector, setShowInspector] = useState(false)
+
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      // Ctrl+I (Windows/Linux) or Cmd+I (Mac) to toggle inspector
+      if ((event.ctrlKey || event.metaKey) && event.key === 'i') {
+        event.preventDefault()
+        setShowInspector(prev => !prev)
+      }
+    }
+
+    document.addEventListener('keydown', handleKeyDown)
+    return () => document.removeEventListener('keydown', handleKeyDown)
+  }, [])
+
   return (
     <Page>
       <React.Suspense fallback={<Loading />}>
@@ -60,6 +76,24 @@ export default function App() {
         </Route>
       </React.Suspense>
       <Dots />
+      {showInspector && (
+        <div style={{
+          position: 'fixed',
+          top: '10px',
+          right: '10px',
+          background: 'rgba(0,0,0,0.8)',
+          color: 'white',
+          padding: '10px',
+          borderRadius: '5px',
+          fontSize: '12px',
+          zIndex: 1000,
+          fontFamily: 'monospace'
+        }}>
+          <div>🔍 Inspector Mode Active</div>
+          <div>Press Ctrl+I (or Cmd+I) to toggle</div>
+          <div>Stats panel should be visible in 3D scene</div>
+        </div>
+      )}
     </Page>
   )
 }

@@ -6,16 +6,19 @@ import {
   TransformControls, 
   useGLTF,
   PointerLockControls,
-  GradientTexture
+  GradientTexture,
+  Stats
 } from '@react-three/drei'
 import {
   Canvas,
   useFrame,
   useThree,
+  useLoader
 } from '@react-three/fiber'
 import { useRef, useState, useEffect } from 'react'
 import * as THREE from 'three'
 import { useControls } from 'leva'
+import { createInspector } from 'three-inspect/vanilla'
 
 function Scene({ isPointerLocked }: { isPointerLocked: boolean }) {
   const sphereRef = useRef<THREE.Mesh>(null!)
@@ -31,6 +34,26 @@ function Scene({ isPointerLocked }: { isPointerLocked: boolean }) {
   const moveLeft = useRef(false)
   const moveRight = useRef(false)
   const { camera } = useThree()
+  const [isVRSession, setIsVRSession] = useState(false)
+
+  // VR input handling
+  const vrInputSources = useRef<XRInputSource[]>([])
+  const vrGamepadAxes = useRef<{ left: [number, number], right: [number, number] }>({ 
+    left: [0, 0], 
+    right: [0, 0] 
+  })
+
+  const boxTextures = useLoader(THREE.TextureLoader, [
+    '/pmndrs.png', // right (+X)
+    '/react.png',  // left (-X)
+    '/three.png',  // top (+Y)
+    '/pmndrs.png', // bottom (-Y) (will be replaced with color)
+    '/react.png',  // front (+Z)
+    '/three.png',  // back (-Z)
+  ])
+
+  const domeOutsideTexture = useLoader(THREE.TextureLoader, '/pmndrs.png')
+  const domeInsideTexture = useLoader(THREE.TextureLoader, '/react.png')
 
   useEffect(() => {
     const onKeyDown = (event: KeyboardEvent) => {
@@ -84,35 +107,109 @@ function Scene({ isPointerLocked }: { isPointerLocked: boolean }) {
     }
   }, [])
 
+  // VR session and input handling
+  useEffect(() => {
+    const handleVRSessionStart = (event: Event) => {
+      const xrSessionEvent = event as XRSessionEvent
+      setIsVRSession(true)
+      const session = xrSessionEvent.session
+      
+      // Handle VR input sources
+      const handleInputSourcesChange = () => {
+        vrInputSources.current = Array.from(session.inputSources)
+      }
+      
+      session.addEventListener('inputsourceschange', handleInputSourcesChange)
+      handleInputSourcesChange() // Get initial input sources
+      
+      // Store session reference for cleanup
+      return () => {
+        session.removeEventListener('inputsourceschange', handleInputSourcesChange)
+      }
+    }
+
+    const handleVRSessionEnd = () => {
+      setIsVRSession(false)
+      vrInputSources.current = []
+      vrGamepadAxes.current = { left: [0, 0], right: [0, 0] }
+    }
+
+    // Listen for VR session events
+    if (navigator.xr) {
+      navigator.xr.addEventListener('sessionstart', handleVRSessionStart as EventListener)
+      navigator.xr.addEventListener('sessionend', handleVRSessionEnd as EventListener)
+    }
+
+    return () => {
+      if (navigator.xr) {
+        navigator.xr.removeEventListener('sessionstart', handleVRSessionStart as EventListener)
+        navigator.xr.removeEventListener('sessionend', handleVRSessionEnd as EventListener)
+      }
+    }
+  }, [])
+
   useFrame((state, delta) => {
-    // No animation for the dome or cube
+    // Handle VR input if in VR session
+    if (isVRSession && vrInputSources.current.length > 0) {
+      vrInputSources.current.forEach(inputSource => {
+        if (inputSource.gamepad) {
+          const gamepad = inputSource.gamepad
+          // Handle left controller (movement)
+          if (inputSource.handedness === 'left' && gamepad.axes.length >= 2) {
+            const [x, y] = gamepad.axes
+            const deadzone = 0.1
+            vrGamepadAxes.current.left = [
+              Math.abs(x) > deadzone ? x : 0,
+              Math.abs(y) > deadzone ? y : 0
+            ]
+          }
+          // Handle right controller (rotation/look)
+          if (inputSource.handedness === 'right' && gamepad.axes.length >= 2) {
+            const [x, y] = gamepad.axes
+            const deadzone = 0.1
+            vrGamepadAxes.current.right = [
+              Math.abs(x) > deadzone ? x : 0,
+              Math.abs(y) > deadzone ? y : 0
+            ]
+          }
+        }
+      })
+    }
 
-    if (isPointerLocked) {
-      const speed = 5.0
-      const velocity = new THREE.Vector3()
-      const direction = new THREE.Vector3()
+    // Always allow keyboard movement (WASD) in desktop mode
+    const speed = 5.0
+    const velocity = new THREE.Vector3()
+    const direction = new THREE.Vector3()
+    camera.getWorldDirection(direction)
+    const forward = new THREE.Vector3(direction.x, 0, direction.z).normalize()
+    const right = new THREE.Vector3(-forward.z, 0, forward.x)
 
-      camera.getWorldDirection(direction)
-      const forward = new THREE.Vector3(direction.x, 0, direction.z).normalize()
-      const right = new THREE.Vector3(-forward.z, 0, forward.x)
+    // Keyboard input
+    if (moveForward.current) {
+      velocity.add(forward)
+    }
+    if (moveBackward.current) {
+      velocity.sub(forward)
+    }
+    if (moveLeft.current) {
+      velocity.sub(right)
+    }
+    if (moveRight.current) {
+      velocity.add(right)
+    }
 
-      if (moveForward.current) {
-        velocity.add(forward)
+    // VR input (left controller thumbstick)
+    if (isVRSession) {
+      const [vrX, vrY] = vrGamepadAxes.current.left
+      if (Math.abs(vrX) > 0.1 || Math.abs(vrY) > 0.1) {
+        velocity.add(forward.clone().multiplyScalar(-vrY))
+        velocity.add(right.clone().multiplyScalar(vrX))
       }
-      if (moveBackward.current) {
-        velocity.sub(forward)
-      }
-      if (moveLeft.current) {
-        velocity.sub(right)
-      }
-      if (moveRight.current) {
-        velocity.add(right)
-      }
+    }
 
-      if (velocity.length() > 0) {
-        velocity.normalize().multiplyScalar(speed * delta)
-        camera.position.add(velocity)
-      }
+    if (velocity.length() > 0) {
+      velocity.normalize().multiplyScalar(speed * delta)
+      camera.position.add(velocity)
     }
   })
 
@@ -156,51 +253,46 @@ function Scene({ isPointerLocked }: { isPointerLocked: boolean }) {
         castShadow 
       />
       
-      <mesh scale={100}>
+      <mesh scale={100} name="skybox">
         <sphereGeometry args={[1, 64, 64]} />
         <meshBasicMaterial side={THREE.BackSide}>
           <GradientTexture stops={[0, 1]} colors={['#B0C4DE', '#4682B4']} />
         </meshBasicMaterial>
       </mesh>
-      <mesh ref={sphereRef} position={[0, -2, -5]}>
+      <mesh ref={sphereRef} position={[0, 0, -5]} name="dome">
         <sphereGeometry args={[2, 32, 32, 0, Math.PI * 2, 0, 2 * Math.PI / 3]} />
         <meshStandardMaterial 
+          map={domeOutsideTexture}
           color={sphereColor} 
           metalness={0.8} 
           roughness={0.2} 
           transparent={true} 
           opacity={0.5} 
-          side={THREE.DoubleSide}
-          map={new THREE.TextureLoader().load('/pmndrs.png')}
+          side={THREE.FrontSide}
+        />
+        <meshStandardMaterial 
+          map={domeInsideTexture}
+          color={sphereColor} 
+          metalness={0.8} 
+          roughness={0.2} 
+          transparent={true} 
+          opacity={0.5} 
+          side={THREE.BackSide}
         />
       </mesh>
-      <mesh ref={cubeRef} position={[0, 0, -5]}>
-        <boxGeometry args={[4, 4, 3]} />
-        <meshStandardMaterial 
-          color={cubeColor} 
-          metalness={0.6} 
-          roughness={0.4} 
-          transparent={true} 
-          opacity={0.5}
-          side={THREE.DoubleSide}
-          map={new THREE.TextureLoader().load('/pmndrs.png')}
-        />
+      <mesh ref={cubeRef} position={[0, 0, -5]} name="box">
+        <boxGeometry args={[4, 3.5, 4]} />
+        <meshStandardMaterial attach="material-0" map={boxTextures[0]} metalness={0.6} roughness={0.4} transparent opacity={0.5} side={THREE.DoubleSide} />
+        <meshStandardMaterial attach="material-1" map={boxTextures[1]} metalness={0.6} roughness={0.4} transparent opacity={0.5} side={THREE.DoubleSide} />
+        <meshStandardMaterial attach="material-2" map={boxTextures[2]} metalness={0.6} roughness={0.4} transparent opacity={0.5} side={THREE.DoubleSide} />
+        <meshStandardMaterial attach="material-3" color="white" metalness={0.6} roughness={0.4} transparent opacity={0.5} side={THREE.DoubleSide} />
+        <meshStandardMaterial attach="material-4" map={boxTextures[4]} metalness={0.6} roughness={0.4} transparent opacity={0.5} side={THREE.DoubleSide} />
+        <meshStandardMaterial attach="material-5" map={boxTextures[5]} metalness={0.6} roughness={0.4} transparent opacity={0.5} side={THREE.DoubleSide} />
       </mesh>
       <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, -2, 0]}>
         <planeGeometry args={[20, 20]} />
         <meshStandardMaterial color="darkgreen" />
       </mesh>
-      {Array.from({ length: 50 }).map((_, i) => (
-        <mesh
-          key={i}
-          position={[(Math.random() - 0.5) * 20, Math.random() * 10, (Math.random() - 0.5) * 20]}>
-          <sphereGeometry args={[0.1, 8, 8]} />
-          <meshStandardMaterial
-            color={`hsl(${Math.random() * 360}, 70%, 60%)`}
-            emissive={`hsl(${Math.random() * 360}, 70%, 30%)`}
-          />
-        </mesh>
-      ))}
 
       {isPointerLocked ? (
         <PointerLockControls />
@@ -215,8 +307,22 @@ function Scene({ isPointerLocked }: { isPointerLocked: boolean }) {
           dampingFactor={0.05}
         />
       )}
+      <Stats />
     </>
   )
+}
+
+function InspectorIntegration() {
+  const { scene, camera, gl } = useThree()
+  useEffect(() => {
+    const disposer = createInspector(document.body, {
+      scene,
+      camera,
+      renderer: gl,
+    })
+    return disposer
+  }, [scene, camera, gl])
+  return null
 }
 
 export default function App() {
@@ -286,6 +392,7 @@ export default function App() {
         <Scene isPointerLocked={isPointerLocked} />
         <PerspectiveCamera makeDefault />
         <Preload all />
+        <InspectorIntegration />
       </Canvas>
       <div
         style={{
@@ -308,6 +415,8 @@ export default function App() {
             📱 <strong>Touch:</strong> Drag to rotate, pinch to zoom
             <br />
             🥽 <strong>VR:</strong> Tap "Enter VR" for immersive experience
+            <br />
+            🎮 <strong>VR Controls:</strong> Left thumbstick for movement, right for rotation
           </p>
         ) : (
           <p style={{ margin: 0, fontSize: '14px' }}>
@@ -316,6 +425,8 @@ export default function App() {
             🔒 <strong>Lock:</strong> Click "Mouse Lock" for FPS-style controls (Use WASD to move)
             <br />
             🥽 <strong>VR:</strong> Click "Enter VR" for immersive experience
+            <br />
+            🎮 <strong>VR Controls:</strong> WASD + Left thumbstick for movement, right for rotation
           </p>
         )}
       </div>

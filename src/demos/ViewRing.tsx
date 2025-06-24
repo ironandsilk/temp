@@ -1,7 +1,8 @@
 import { OrbitControls, useGLTF } from '@react-three/drei'
 import { Canvas, createPortal, useFrame, useThree } from '@react-three/fiber'
-import { useLayoutEffect, useMemo, useRef, useState } from 'react'
+import { useLayoutEffect, useMemo, useRef, useState, useEffect } from 'react'
 import * as THREE from 'three'
+import { createInspector } from 'three-inspect/vanilla'
 
 function ViewRing() {
   const { gl, scene: defaultScene, camera: defaultCamera, size, events } = useThree()
@@ -58,6 +59,19 @@ function ViewRing() {
   )
 }
 
+function InspectorIntegration() {
+  const { scene, camera, gl } = useThree()
+  useEffect(() => {
+    const disposer = createInspector(document.body, {
+      scene,
+      camera,
+      renderer: gl,
+    })
+    return disposer
+  }, [scene, camera, gl])
+  return null
+}
+
 export default function App() {
   return (
     <Canvas>
@@ -67,6 +81,7 @@ export default function App() {
       </mesh>
       <ViewRing />
       <OrbitControls />
+      <InspectorIntegration />
     </Canvas>
   )
 } 
