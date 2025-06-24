@@ -208,7 +208,7 @@ export default function App() {
       <div className="row">
         <div className="description">
           <h2 className="phase-title">Phase 2</h2>
-          <div className="body">A candy bar and a gum drop with a sticker inside the box. (Draggable hemisphere, cube, and parented example)</div>
+          <div className="body">A cube in a hemisphere. (Draggable hemisphere, cube, and parented example)</div>
         </div>
         <div className="viewer" ref={view3} />
       </div>
@@ -265,37 +265,42 @@ export default function App() {
         <View track={view3}>
           <color attach="background" args={['lightgreen']} />
           <Scene />
+          <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, -3, 0]}>
+            <ringGeometry args={[0, 3.1, 32]} />
+            <meshStandardMaterial 
+              map={(() => {
+                const video = document.createElement('video')
+                video.src = 'https://sample-videos.com/zip/10/mp4/SampleVideo_1280x720_1mb.mp4'
+                video.loop = true
+                video.muted = true
+                video.autoplay = true
+                video.crossOrigin = 'anonymous'
+                video.play()
+                return new THREE.VideoTexture(video)
+              })()}
+              side={THREE.DoubleSide}
+            />
+          </mesh>
           <mesh>
-            <sphereGeometry args={[10, 32, 32, 0, Math.PI * 2, 0, Math.PI / 2]} />
-            <meshStandardMaterial color="lightblue" side={THREE.BackSide} />
+            <sphereGeometry args={[3.1, 32, 32, 0, Math.PI * 2, 0, Math.asin(3/3.1)]} />
+            <meshStandardMaterial 
+              color="lightblue" 
+              side={THREE.BackSide} 
+              transparent 
+              opacity={0.3}
+              map={new THREE.TextureLoader().load('/pmndrs.png')}
+            />
           </mesh>
           <TransformControls>
-            <mesh position={[-2, 0, 0]}>
-              <sphereGeometry args={[1, 32, 32, 0, Math.PI * 2, 0, Math.PI / 2]} />
-              <meshStandardMaterial color="lightblue" />
+            <mesh position={[0, 0, 0]}>
+              <boxGeometry args={[4, 4, 3]} />
+              <meshStandardMaterial 
+                color="red" 
+                map={new THREE.TextureLoader().load('/pmndrs.png')}
+              />
             </mesh>
           </TransformControls>
-          <TransformControls>
-            <mesh position={[2, 0, 0]}>
-              <boxGeometry args={[1, 1, 1]} />
-              <meshStandardMaterial color="red" />
-            </mesh>
-          </TransformControls>
-          <TransformControls>
-            <group position={[0, 0, 0]}>
-              <mesh>
-                <boxGeometry args={[1, 1, 1]} />
-                <meshStandardMaterial color="green" />
-              </mesh>
-              <mesh position={[0, 1, 0]}>
-                <sphereGeometry args={[0.3, 32, 32]} />
-                <meshStandardMaterial color="yellow" />
-              </mesh>
-            </group>
-          </TransformControls>
-          <Duck scale={2} />
-          <Person scale={0.2} />
-          <PerspectiveCamera makeDefault fov={40} position={[0, 0, 6]} />
+          <PerspectiveCamera makeDefault fov={40} position={[0, 0, 12]} />
           <OrbitControls makeDefault enableZoom={false} />
         </View>
         <View track={view4}>

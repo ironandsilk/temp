@@ -11,6 +11,7 @@ const DEFAULT_COMPONENT_NAME = 'Viewcube'
 const visibleComponents: any = {
   Viewcube: demos.Viewcube,
   ViewRing: demos.ViewRing,
+  ViewVR: demos.ViewVR,
   ViewTracking: demos.ViewTracking,
   MultiView: demos.MultiView,
 }
